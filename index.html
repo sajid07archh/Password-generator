@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Strong Unique Password Generator</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #1e293b, #3b82f6);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 15px;
+      width: 350px;
+      text-align: center;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    .display {
+      display: flex;
+      margin-bottom: 20px;
+    }
+
+    .display input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 5px 0 0 5px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .display button {
+      background-color: #3b82f6;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 0 5px 5px 0;
+      color: white;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .display button:hover {
+      background-color: #2563eb;
+    }
+
+    .settings {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .checkboxes label {
+      display: block;
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    #generate {
+      background-color: #10b981;
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #generate:hover {
+      background-color: #059669;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔐 Strong Password Generator</h1>
+
+    <div class="display">
+      <input type="text" id="password" readonly placeholder="Your password will appear here..." />
+      <button id="copy">📋 Copy</button>
+    </div>
+
+    <div class="settings">
+      <label>Password Length:
+        <input type="number" id="length" min="4" max="32" value="12" />
+      </label>
+
+      <div class="checkboxes">
+        <label><input type="checkbox" id="uppercase" checked /> Include Uppercase</label>
+        <label><input type="checkbox" id="lowercase" checked /> Include Lowercase</label>
+        <label><input type="checkbox" id="numbers" checked /> Include Numbers</label>
+        <label><input type="checkbox" id="symbols" /> Include Symbols</label>
+      </div>
+    </div>
+
+    <button id="generate">Generate Password</button>
+  </div>
+
+  <script>
+    const passwordField = document.getElementById("password");
+    const copyBtn = document.getElementById("copy");
+    const lengthEl = document.getElementById("length");
+    const upperEl = document.getElementById("uppercase");
+    const lowerEl = document.getElementById("lowercase");
+    const numberEl = document.getElementById("numbers");
+    const symbolEl = document.getElementById("symbols");
+    const generateBtn = document.getElementById("generate");
+
+    const upperSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const lowerSet = "abcdefghijklmnopqrstuvwxyz";
+    const numberSet = "0123456789";
+    const symbolSet = "!@#$%^&*()_+{}[]<>?/|~";
+
+    function getRandomChar(set) {
+      return set[Math.floor(Math.random() * set.length)];
+    }
+
+    function generatePassword() {
+      let length = parseInt(lengthEl.value);
+      let includeUpper = upperEl.checked;
+      let includeLower = lowerEl.checked;
+      let includeNumber = numberEl.checked;
+      let includeSymbol = symbolEl.checked;
+
+      let availableSets = "";
+      if (includeUpper) availableSets += upperSet;
+      if (includeLower) availableSets += lowerSet;
+      if (includeNumber) availableSets += numberSet;
+      if (includeSymbol) availableSets += symbolSet;
+
+      if (availableSets === "") {
+        alert("Please select at least one character type!");
+        return;
+      }
+
+      let password = "";
+      for (let i = 0; i < length; i++) {
+        password += getRandomChar(availableSets);
+      }
+
+      passwordField.value = password;
+    }
+
+    copyBtn.addEventListener("click", () => {
+      if (passwordField.value) {
+        navigator.clipboard.writeText(passwordField.value);
+        copyBtn.textContent = "✅ Copied!";
+        setTimeout(() => (copyBtn.textContent = "📋 Copy"), 1500);
+      }
+    });
+
+    generateBtn.addEventListener("click", generatePassword);
+  </script>
+</body>
+</html>
