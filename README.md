@@ -1,2 +1,2 @@
 # Password-generator
-A code repo for project unique password generator using html , Css and Javascript.
+A code repo forunique password generator project using html , Css and Javascript.
